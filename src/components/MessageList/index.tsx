@@ -1,4 +1,5 @@
 import { api } from '../../services/api';
+import io from 'socket.io-client';
 import styles from './styles.module.scss';
 
 import logoImg from '../../assets/logo.svg';
@@ -17,6 +18,15 @@ type Message = {
     }
 };
 
+const messagesQueue: Message[] = [];
+
+const socket = io('http://localhost:4000');
+
+//Add na fila de mensagens
+socket.on('new_message', newMessage => {
+    messagesQueue.push(newMessage);
+})
+
 export function MessageList(){
     /**
      * Estado é basicamente uma forma de conseguir armazenar informações dentro do componente
@@ -29,6 +39,23 @@ export function MessageList(){
      * Existe um conceito para isso: Imutabilidade
      */
     const [messages, setMessages] = useState<Message[]>([]); //Irá armazenar um array de Message
+    /**
+     * Sempre quando estamos atualizando uma informação(setMessages) no estado, e a nova informação
+     * depender da informação anterior, não recebemos em um array, utilizamos o prevState, fazemos o seguinte:
+     */
+    useEffect(() => {
+        const timer = setInterval(() => {
+            if (messagesQueue.length > 0) {
+                setMessages(prevState =>[
+                    messagesQueue[0],
+                    prevState[0],
+                    prevState[1]
+                ].filter(Boolean))
+
+                messagesQueue.shift();
+            }
+        }, 3000)
+    }, [])
 
     /**
      * As variáveis que estiverem em UseEffect, toda vez que mudarem o valor

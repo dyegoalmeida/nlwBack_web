@@ -1,6 +1,9 @@
+import { useContext } from 'react';
 import styles from './App.module.scss';
 import { LoginBox } from './components/LoginBox';
 import { MessageList } from './components/MessageList';
+import { SendMessageForm } from './components/SendMessageForm';
+import { AuthContext } from './contexts/auth';
 
 /**
  * IMPORTANTE!
@@ -8,6 +11,7 @@ import { MessageList } from './components/MessageList';
  */
 
 export function App() {
+  const { user } = useContext(AuthContext);
   return (
     /**
      * Usa-se o "styles." que vem do arquivo App.modules.css, pois esse padrão
@@ -19,9 +23,9 @@ export function App() {
      * 
      * No react tudo se baseia-se em componentes, cada pedaçinho de nossa aplicação é um componente.
      * * */
-    <main className={styles.contentWrapper}>
+    <main className={`${styles.contentWrapper} ${!!user ? styles.contentSigned : ''}`}>
       <MessageList />
-      <LoginBox />
+        { !!user ? <SendMessageForm /> : <LoginBox /> }
     </main>
   )
 }

@@ -1,19 +1,12 @@
-import { useEffect } from 'react';
+import { useContext } from 'react';
 import { VscGithubInverted } from 'react-icons/vsc';
+import { AuthContext } from '../../contexts/auth';
 import styles from './styles.module.scss';
 
 export function LoginBox(){
-    const signInUrl = `https://github.com/login/oauth/authorize?scope=user&client_id=176b7e7303cc467b2082`;
+    const { signInUrl, user } = useContext(AuthContext);
 
-    useEffect(() => {
-        const url = window.location.href;
-        const hasGithubCode = url.includes('?code=');
-
-        if (hasGithubCode) {
-            const [urlWithoutCode, githubCode] = url.split('?code=')
-            console.log({ urlWithoutCode, githubCode })
-        }
-    }, [])
+    console.log(user);
 
     return (
         <div className={styles.loginBoxWrapper}>
