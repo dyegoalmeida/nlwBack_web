@@ -71,28 +71,37 @@ export function MessageList(){
     });
 
     return (
-       <div className={styles.messageListWrapper}>
-           <img src={logoImg} alt="DoWhile 2021" />
-            <ul className={styles.messageList}>
-                {messages.map(message => {
-                    return (
-                        /**
-                         * Sempre quando se usa o map no react, tem que colocar o parametro Key, 
-                         * especificando a chave única que você tem para cada mensagem no caso, cada item
-                         * do array.
-                         */
-                        <li key={message.id} className={styles.message}>
-                            <p className={styles.messageContent}>{message.text}</p>
-                            <div className={styles.messageUser}>
-                                <div className={styles.userImage}>
-                                    <img src={message.user.avatar_url} alt={message.user.name} />
-                                </div>
-                                <span>{message.user.name}</span>
-                            </div>
-                        </li>
-                    );
-                })}
-            </ul>    
-       </div>
+       /**
+        * Com React.fragments você consegue retornar mais que um elemento
+        */
+       //<React.Fragment>
+           <div className={styles.container}>
+                <div className={styles.messageListWrapper}>
+                    <img src={logoImg} alt="DoWhile 2021" />
+                </div>
+                <div className={styles.messageListBody}>
+                    <ul className={styles.messageList}>
+                        {messages.map(message => {
+                            return (
+                                /**
+                                 * Sempre quando se usa o map no react, tem que colocar o parametro Key, 
+                                 * especificando a chave única que você tem para cada mensagem no caso, cada item
+                                 * do array.
+                                 */
+                                <li key={message.id} className={styles.message}>
+                                    <p className={styles.messageContent}>{message.text}</p>
+                                    <div className={styles.messageUser}>
+                                        <div className={styles.userImage}>
+                                            <img src={message.user.avatar_url} alt={message.user.name} />
+                                        </div>
+                                        <span>{message.user.name}</span>                                
+                                    </div>
+                                </li>
+                            );
+                        })}
+                    </ul>   
+                </div> 
+            </div>
+       //</React.Fragment>
     )
 }
